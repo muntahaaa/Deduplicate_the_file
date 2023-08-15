@@ -1,0 +1,2 @@
+https://www.edureka.co/blog/file-handling-in-cpp/
+https://www.google.com/search?channel=fs&client=ubuntu-sn&q=file+stream+classes+in+c%2B%2B
