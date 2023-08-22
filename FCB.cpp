@@ -39,7 +39,7 @@ int main() {
     FileControlBlock fcb;
 
     // Replace 'example.txt' with the path to your file
-    if (loadFile("searched websites.txt", fcb)) {
+    if (loadFile("searched websites (copy).txt", fcb)) {
         displayFileInformation(fcb);
     }
 
