@@ -1,46 +1,127 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
+#include<sys/types.h>
+#include<sys/stat.h>
+#include "FCB.h"
+using namespace std;
 
-struct FileControlBlock {
-    std::string filename;
-    std::vector<char> content;
-    std::size_t size;
-};
 
-bool loadFile(const std::string& filename, FileControlBlock& fcb) {
-    std::ifstream file(filename, std::ios::binary);
-    
-    if (!file.is_open()) {
-        std::cerr << "Error: Unable to open file '" << filename << "'" << std::endl;
+
+bool loadFile(const string &filename, FileControlBlock &fcb)
+{
+    ifstream file(filename, ios::binary);
+
+    if (!file.is_open())
+    {
+        cerr << "Error: Unable to open file '" << filename << "'" << endl;
         return false;
     }
-
-    file.seekg(0, std::ios::end);
-    fcb.size = static_cast<std::size_t>(file.tellg());
-    file.seekg(0, std::ios::beg);
+    
+    //moving from the beginning of the file upto end will help to get file size
+     file.seekg(0, ios::end); // move to the end of file
+     fcb.size = static_cast<size_t>(file.tellg());
+     file.seekg(0, ios::beg); // move to the beg of file
 
     fcb.content.resize(fcb.size);
-    file.read(fcb.content.data(), fcb.size);
+    
+    content.assign((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
     fcb.filename = filename;
-
+    
     file.close();
 
     return true;
 }
 
-void displayFileInformation(const FileControlBlock& fcb) {
-    std::cout << "File Name: " << fcb.filename << std::endl;
-    std::cout << "File Size: " << fcb.size << " bytes" << std::endl;
+void displayStatus(const FileControlBlock &fcb){
+  cout << "File Status: ";
+
+if (fcb.status == FileStatus::Closed) {
+    cout << "Closed" << endl;
+} else if (fcb.status == FileStatus::Open) {
+    cout << "Open" <<endl;
+} else if (fcb.status == FileStatus::ReadOnly) {
+    cout << "Read-Only" << endl;
+} else if (fcb.status == FileStatus::ReadWrite) {
+    cout << "Read-Write" << endl;
+} else {
+    cout << "Unknown" << endl;
+}
 }
 
-int main() {
-    FileControlBlock fcb;
+void displaytype(const FileControlBlock &fcb,struct stat fileInfo){
+  if(stat(fcb.filename.c_str(),&fileInfo)!=0)
+  cerr<<"Unable to detect file type "<<endl;  
+  cout<<"File Type: ";
+ 
+  if((fileInfo.st_mode & S_IFMT)==__S_IFDIR)
+  cout << "Directory" << endl;
+  
+ 
+  else
+  cout << "Regular" << endl;
+}
 
-    // Replace 'example.txt' with the path to your file
-    if (loadFile("searched websites (copy).txt", fcb)) {
+void displayPermission(const FileControlBlock &fcb,struct stat fileInfo){
+    if(stat(fcb.filename.c_str(),&fileInfo)!=0)
+    cerr<<"Unable to detect file type "<<endl;  
+    cout << "File Permissions: ";
+   mode_t permissions = fileInfo.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO);
+    if (permissions & S_IRUSR) {
+        cout << "Owner Read ";
+    }
+    if (permissions & S_IWUSR) {
+        cout << "Owner Write ";
+    }
+    if (permissions & S_IXUSR) {
+        cout << "Owner Execute ";
+    }
+    if (permissions & S_IRGRP) {
+        cout << "Group Read ";
+    }
+    if (permissions & S_IWGRP) {
+        cout << "Group Write ";
+    }
+    if (permissions & S_IXGRP) {
+        cout << "Group Execute ";
+    }
+    if (permissions & S_IROTH) {
+        cout << "Others Read ";
+    }
+    if (permissions & S_IWOTH) {
+        cout << "Others Write ";
+    }
+    if (permissions & S_IXOTH) {
+        cout << "Others Execute ";
+    }
+
+    std::cout << std::endl;
+
+
+   
+}
+void displayFileInformation(const FileControlBlock &fcb)
+{
+    cout << "File Name: " << fcb.filename << endl;
+    cout << "File Size: " << fcb.size << " bytes" << endl;
+    //cout<<"File contents: \n"<<content<<endl;
+    displayStatus(fcb);
+   
+    
+}
+
+int main()
+{
+    FileControlBlock fcb;
+    struct stat fileInfo;
+    
+    if (loadFile("searched websites (copy).txt", fcb))
+    {
         displayFileInformation(fcb);
+         displaytype(fcb,fileInfo);
+        displayPermission(fcb,fileInfo);
     }
 
     return 0;

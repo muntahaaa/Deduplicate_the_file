@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 #include <fstream> // Required for file stream operations
-#include <string.h>
 #include <vector>
 #include <dirent.h>
 #include <sys/stat.h>
+#include "read_file.h"
 using namespace std;
 vector<string> fileContents;
 void listOfFilesInDirectory(const char *directorypath, vector<string> &paths)
