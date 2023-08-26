@@ -5,9 +5,13 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include "read_file.h"
+#include "print.cpp"
 using namespace std;
+vector<string> directoryItems;
 vector<string> fileContents;
-void listOfFilesInDirectory(const char *directorypath, vector<string> &paths)
+const char *directoryPath;
+
+void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, vector<string> &names)
 {
     DIR *dir;
     struct dirent *entry;
@@ -16,7 +20,6 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths)
     {
         cerr << "Error in opening directory " << directorypath << endl;
     }
-    cout << "File and Directory names are: ";
     while (entry = readdir(dir))
     {
 
@@ -33,6 +36,7 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths)
             string itemName = entry->d_name;
             if (itemName != "." && itemName != "..")
             {
+                names.push_back(itemName);
                 string itemPath = string(directorypath) + "/" + itemName;
                 paths.push_back(itemPath);
             }
@@ -76,16 +80,9 @@ void read_file(string fileName, string &fileContent)
 
 int main()
 {
-    const char *directoryPath = "/home/muntaha/Desktop/SPL-01"; // Current directory
-    vector<string> directoryItems;
-    listOfFilesInDirectory(directoryPath, directoryItems);
+    directoryPath = "/home/muntaha/Desktop/SPL-01"; // Current directory
 
-    // creating a vector to store file contents
+    listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
 
-    for (const string &itemPath : directoryItems)
-    {
-        string content;
-        read_file(itemPath, content);
-        fileContents.push_back(content);
-    }
+    printProperties();
 }
