@@ -4,6 +4,7 @@
 #include <vector>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <cerrno>
 #include "read_file.h"
 #include "print.cpp"
 using namespace std;
@@ -25,14 +26,7 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
 
         if (entry->d_type == DT_REG)
         {
-            /*{
-                // regular file
-                cout << "File: " << entry->d_name << endl;
-            }
-            else if (entry->d_type == DT_DIR && strcmp(entry->d_name, ".") != 0)
-            {
-                cout << "Directory: " << entry->d_name << endl;
-            }*/
+
             string itemName = entry->d_name;
             if (itemName != "." && itemName != "..")
             {
@@ -44,11 +38,9 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
     }
     closedir(dir);
 }
-
-void read_file(string fileName, string &fileContent)
+void readcontentInInteger(string fileName)
 {
-
-    ifstream inputFile(fileName); // Replace with file's name, ifstream for input function
+    ifstream inputFile(fileName); 
 
     if (!inputFile.is_open())
     {
@@ -56,26 +48,18 @@ void read_file(string fileName, string &fileContent)
     }
 
     char readData;
+
     bool flag = false;
 
     // to read data and represent it in Int form
+    cout << "data represented in Int format:\n";
     while (inputFile.read(&readData, sizeof(readData)))
     {
-        // cout << static_cast<int>(readData) << " ";
-        //  cout<<byte<<" ";
+        cout << static_cast<int>(readData) << " ";
         flag = true;
     }
     if (flag)
         cout << "\nFile " << fileName << " read successfully." << endl;
-    // storing contents in the vector
-    while (inputFile.get(readData))
-    {
-        fileContent += readData;
-    }
-    cout << "\n"
-         << fileName << " content loaded successfully";
-
-    inputFile.close();
 }
 
 int main()
@@ -83,6 +67,9 @@ int main()
     directoryPath = "/home/muntaha/Desktop/SPL-01"; // Current directory
 
     listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
-
+    
+    //string fileName = "searched websites (copy).txt";
+    //readcontentInInteger(fileName);
+    
     printProperties();
 }

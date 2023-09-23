@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "FCB.h"
+#include "Hash.cpp"
 FileControlBlock fcb;
 struct stat fileInfo;
 using namespace std;
@@ -124,5 +125,6 @@ void displayFileInformation(const FileControlBlock &fcb)
     cout << "File Name: " << fcb.filename << endl;
     cout << "File Size: " << fcb.size << " bytes" << endl;
     //cout<<"File contents: \n"<<content<<endl;
+    cout<<"generated Hash: "<<SHA512(content)<<endl;
     displayStatus(fcb);
 }
