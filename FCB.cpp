@@ -8,6 +8,7 @@
 #include "Hash.cpp"
 FileControlBlock fcb;
 struct stat fileInfo;
+
 using namespace std;
 
 bool loadFile(const string &filename, FileControlBlock &fcb)
@@ -28,6 +29,9 @@ bool loadFile(const string &filename, FileControlBlock &fcb)
     fcb.content.resize(fcb.size);
 
     content.assign((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+    
+    string Hashvalue=SHA512(content);
+    fcb.hash=Hashvalue;
 
     fcb.filename = filename;
 
@@ -124,7 +128,9 @@ void displayFileInformation(const FileControlBlock &fcb)
 {
     cout << "File Name: " << fcb.filename << endl;
     cout << "File Size: " << fcb.size << " bytes" << endl;
+    cout<<"Hash Value: "<<fcb.hash<<endl;
     //cout<<"File contents: \n"<<content<<endl;
-    cout<<"generated Hash: "<<SHA512(content)<<endl;
+   
+    
     displayStatus(fcb);
 }
