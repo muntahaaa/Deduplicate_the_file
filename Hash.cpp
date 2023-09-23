@@ -378,14 +378,3 @@ string SHA512(string myString)
     return output.str();
 }
  
-// // Driver Code
-// int main()
-// {
-//     // Input
-//     string S = "GeeksForGeeks";
- 
-//     // Function Call
-//     cout << S << ": " << SHA512(S);
- 
-//     return 0;
-// }

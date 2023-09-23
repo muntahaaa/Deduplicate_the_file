@@ -29,6 +29,7 @@ struct FileControlBlock
 {
     string filename;
     vector<string> content;
+    string hash;
     size_t size;
     FileType type;
     FilePermissions permissions;
