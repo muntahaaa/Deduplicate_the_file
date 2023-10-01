@@ -84,7 +84,7 @@ string gethex(string bin)
         return "e";
     if (bin == "1111")
         return "f";
-}
+};
  
 // Function to convert a decimal value
 // to hexa decimal value

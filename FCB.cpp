@@ -4,6 +4,8 @@
 #include <string>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
+
 #include "FCB.h"
 #include "Hash.cpp"
 FileControlBlock fcb;
@@ -14,7 +16,6 @@ using namespace std;
 bool loadFile(const string &filename, FileControlBlock &fcb)
 {
     ifstream file(filename, ios::binary);
-
     if (!file.is_open())
     {
         cerr << "Error: Unable to open file '" << filename << "'" << endl;
@@ -29,44 +30,69 @@ bool loadFile(const string &filename, FileControlBlock &fcb)
     fcb.content.resize(fcb.size);
 
     content.assign((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
-    
-    string Hashvalue=SHA512(content);
-    fcb.hash=Hashvalue;
+
+    string Hashvalue = SHA512(content);
+    fcb.hash = Hashvalue;
 
     fcb.filename = filename;
+
+    FileStatus fs = displayStatus(fcb);
 
     file.close();
 
     return true;
 }
 
-void displayStatus(const FileControlBlock &fcb)
+FileStatus displayStatus(const FileControlBlock &fcb)
 {
-    cout << "File Status: ";
+
+    string status;
 
     if (fcb.status == FileStatus::Closed)
     {
-        cout << "Closed" << endl;
+
+        status = "Closed";
     }
     else if (fcb.status == FileStatus::Open)
     {
-        cout << "Open" << endl;
+
+        status = "Open";
     }
     else if (fcb.status == FileStatus::ReadOnly)
     {
-        cout << "Read-Only" << endl;
+
+        status = "Read-Only";
     }
     else if (fcb.status == FileStatus::ReadWrite)
     {
-        cout << "Read-Write" << endl;
+
+        status = "Read-Write";
     }
     else
     {
-        cout << "Unknown" << endl;
+
+        status = "Unknown";
+    }
+    return fcb.status;
+}
+string fileStatusToString(FileStatus status)
+{
+    switch (status)
+    {
+    case FileStatus::Closed:
+        return "Closed";
+    case FileStatus::Open:
+        return "Open";
+    case FileStatus::ReadOnly:
+        return "Read-Only";
+    case FileStatus::ReadWrite:
+        return "Read-Write";
+    default:
+        return "Unknown";
     }
 }
 
-void displaytype(const FileControlBlock &fcb, struct stat fileInfo)
+FileType displaytype(const FileControlBlock &fcb, struct stat fileInfo)
 {
     if (stat(fcb.filename.c_str(), &fileInfo) != 0)
         cerr << "Unable to detect file type " << endl;
@@ -77,60 +103,120 @@ void displaytype(const FileControlBlock &fcb, struct stat fileInfo)
 
     else
         cout << "Regular" << endl;
+    return fcb.type;
+}
+string fileTypeToString(FileType type)
+{
+    switch (type)
+    {
+    case FileType::Directory:
+        return "Directory";
+    case FileType::Regular:
+        return "Regular";
+    default:
+        return "Unknown";
+    }
 }
 
-void displayPermission(const FileControlBlock &fcb, struct stat fileInfo)
+vector<CombinedPermission> displayPermission(const FileControlBlock &fcb, struct stat fileInfo)
 {
+    vector<CombinedPermission> permissionsVector;
     if (stat(fcb.filename.c_str(), &fileInfo) != 0)
         cerr << "Unable to detect file type " << endl;
-    cout << "File Permissions: ";
+
     mode_t permissions = fileInfo.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO);
     if (permissions & S_IRUSR)
     {
-        cout << "Owner Read ";
+
+        permissionsVector.push_back(CombinedPermission::OwnerRead);
     }
     if (permissions & S_IWUSR)
     {
-        cout << "Owner Write ";
+
+        permissionsVector.push_back(CombinedPermission::OwnerWrite);
     }
     if (permissions & S_IXUSR)
     {
-        cout << "Owner Execute ";
+
+        permissionsVector.push_back(CombinedPermission::OwnerExecute);
     }
     if (permissions & S_IRGRP)
     {
-        cout << "Group Read ";
+
+        permissionsVector.push_back(CombinedPermission::GroupRead);
     }
     if (permissions & S_IWGRP)
     {
-        cout << "Group Write ";
+
+        permissionsVector.push_back(CombinedPermission::GroupWrite);
     }
     if (permissions & S_IXGRP)
     {
-        cout << "Group Execute ";
+
+        permissionsVector.push_back(CombinedPermission::GroupExecute);
     }
     if (permissions & S_IROTH)
     {
-        cout << "Others Read ";
+
+        permissionsVector.push_back(CombinedPermission::OthersRead);
     }
     if (permissions & S_IWOTH)
     {
-        cout << "Others Write ";
+
+        permissionsVector.push_back(CombinedPermission::OthersWrite);
     }
     if (permissions & S_IXOTH)
     {
-        cout << "Others Execute ";
+
+        permissionsVector.push_back(CombinedPermission::OthersExecute);
     }
 
-    std::cout << std::endl;
+    return permissionsVector;
+}
+string combinedPermissionToString(CombinedPermission permission)
+{
+    switch (permission)
+    {
+    case CombinedPermission::OwnerRead:
+        return "OwnerRead";
+    case CombinedPermission::OwnerWrite:
+        return "OwnerWrite";
+    case CombinedPermission::OwnerExecute:
+        return "OwnerExecute";
+    case CombinedPermission::GroupRead:
+        return "GroupRead";
+    case CombinedPermission::GroupWrite:
+        return "GroupWrite";
+    case CombinedPermission::GroupExecute:
+        return "GroupExecute";
+    case CombinedPermission::OthersRead:
+        return "OthersRead";
+    case CombinedPermission::OthersWrite:
+        return "OthersWrite";
+    case CombinedPermission::OthersExecute:
+        return "OthersExecute";
+    default:
+        return "Unknown";
+    }
 }
 void displayFileInformation(const FileControlBlock &fcb)
 {
+    struct stat fileInfo;
     cout << "File Name: " << fcb.filename << endl;
     cout << "File Size: " << fcb.size << " bytes" << endl;
-    cout<<"Hash Value: "<<fcb.hash<<endl;
-    //cout<<"File contents: \n"<<content<<endl;
-   
-    
-    displayStatus(fcb);
+    cout << "Hash Value: " << fcb.hash << endl;
+    cout << "File status: " << fileStatusToString(fcb.status) << endl;
+    cout << "File Type: " << fileTypeToString(fcb.type) << endl;
+
+    vector<CombinedPermission> permissionsVector = displayPermission(fcb, fileInfo);
+
+    cout << "File Permissions: " << endl;
+
+    for (const CombinedPermission &permission : permissionsVector)
+    {
+        cout << combinedPermissionToString(permission) << " " << endl;
+    }
+    cout << endl;
+    cout << "File contents: \n"
+         << content << endl;
 }

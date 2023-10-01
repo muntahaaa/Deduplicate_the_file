@@ -21,6 +21,8 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
     {
         cerr << "Error in opening directory " << directorypath << endl;
     }
+    else
+        cout << "directory opened" << endl;
     while (entry = readdir(dir))
     {
 
@@ -33,6 +35,7 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
                 names.push_back(itemName);
                 string itemPath = string(directorypath) + "/" + itemName;
                 paths.push_back(itemPath);
+                // cout<<"path: "<<itemPath<<endl;
             }
         }
     }
@@ -40,7 +43,7 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
 }
 void readcontentInInteger(string fileName)
 {
-    ifstream inputFile(fileName); 
+    ifstream inputFile(fileName);
 
     if (!inputFile.is_open())
     {
@@ -64,13 +67,9 @@ void readcontentInInteger(string fileName)
 
 int main()
 {
-    directoryPath = "/home/muntaha/Desktop/SPL-01"; // Current directory
+    directoryPath = "/home/muntaha/Desktop/SPL-01/dummy"; 
 
     listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
-    
-    //string fileName = "searched websites (copy).txt";
-    //readcontentInInteger(fileName);
-    
-    printProperties();
-   
+
+    printProperties(directoryItems);
 }
