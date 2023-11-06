@@ -35,7 +35,8 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
                 names.push_back(itemName);
                 string itemPath = string(directorypath) + "/" + itemName;
                 paths.push_back(itemPath);
-                // cout<<"path: "<<itemPath<<endl;
+                 cout<<"path: "<<itemPath<<endl; //it has been sent to print properties. (whole path)
+                 cout<<"name: "<<itemName<<endl;//only file name.
             }
         }
     }
@@ -72,4 +73,5 @@ int main()
     listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
 
     printProperties(directoryItems);
+    checkEquality(directoryItems,fcb);
 }

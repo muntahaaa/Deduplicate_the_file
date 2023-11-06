@@ -35,6 +35,7 @@ bool loadFile(const string &filename, FileControlBlock &fcb)
     fcb.hash = Hashvalue;
 
     fcb.filename = filename;
+    
 
     FileStatus fs = displayStatus(fcb);
 
@@ -199,6 +200,8 @@ string combinedPermissionToString(CombinedPermission permission)
         return "Unknown";
     }
 }
+
+
 void displayFileInformation(const FileControlBlock &fcb)
 {
     struct stat fileInfo;
