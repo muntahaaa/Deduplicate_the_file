@@ -1,0 +1,45 @@
+FilePermissions displayPermission(const FileControlBlock &fcb, struct stat fileInfo)
+{
+    if (stat(fcb.filename.c_str(), &fileInfo) != 0)
+        cerr << "Unable to detect file type " << endl;
+    cout << "File Permissions: ";
+    mode_t permissions = fileInfo.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO);
+    if (permissions & S_IRUSR)
+    {
+        cout << "Owner Read ";
+    }
+    if (permissions & S_IWUSR)
+    {
+        cout << "Owner Write ";
+    }
+    if (permissions & S_IXUSR)
+    {
+        cout << "Owner Execute ";
+    }
+    if (permissions & S_IRGRP)
+    {
+        cout << "Group Read ";
+    }
+    if (permissions & S_IWGRP)
+    {
+        cout << "Group Write ";
+    }
+    if (permissions & S_IXGRP)
+    {
+        cout << "Group Execute ";
+    }
+    if (permissions & S_IROTH)
+    {
+        cout << "Others Read ";
+    }
+    if (permissions & S_IWOTH)
+    {
+        cout << "Others Write ";
+    }
+    if (permissions & S_IXOTH)
+    {
+        cout << "Others Execute ";
+    }
+
+    std::cout << std::endl;
+}
