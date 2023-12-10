@@ -28,6 +28,17 @@ void printProperties(vector<string> directoryItems, vector<string> &names)
         }
     }
 }
+
+vector<char> convertToChar(const vector<string>& content) {
+    string concatenatedString;
+    for (const string& str : content) {
+        concatenatedString += str;
+    }
+
+    // Convert the concatenated string to a vector of characters
+    vector<char> CharContent(concatenatedString.begin(), concatenatedString.end());
+    return CharContent;
+}
 //undone function
 void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, vector<string> &names)
 {
@@ -38,26 +49,32 @@ void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, ve
         
             string filename1 = directoryNames[i];
             string path1 = directoryItems[i];
-            //loadFile(path1, fcb, filename1);
-            readCharactersFromFile(path1, charVector1);
+            loadFile(path1, fcb, filename1);
+
+            for(int i=0;i<fcb.content.size();i++){
+                cout<<i;
+            }
+            charVector1=convertToChar(fcb.content);
+            //readCharactersFromFile(path1, charVector1);
             string filename2 = directoryNames[i+1];
             string path2 = directoryItems[i+1];
-            //loadFile(path2, fcb, filename2);
-            readCharactersFromFile(path2, charVector2);
+            loadFile(path2, fcb, filename2);
+            //readCharactersFromFile(path2, charVector2);
+            charVector2=convertToChar(fcb.content);
 
-            cout<<"path1 "<<path1;
-            cout<<" file1"<<filename1<<endl;
+            cout<<"path1 "<<path1<<endl;
+            cout<<"file1  " <<filename1<<endl;
 
             displayVector(charVector1, "File 1");
             displayVector(charVector2, "File 2");
 
-            // Create and display the union vector
+            
             vector<char> unionVector;
             unionVectors(charVector1, charVector2, unionVector);
             cout << endl;
             //displayVector(unionVector, "Union");
 
-            // Create and display the intersection vector
+            
             vector<char> intersectionVector;
             intersectionVectors(charVector1, charVector2, intersectionVector);
             cout << endl;
@@ -67,7 +84,7 @@ void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, ve
             cout << endl;
 
             double jaccardSimilarity = static_cast<double>(intersectionVector.size()) / unionVector.size();
-            //cout << "Jaccard similarity: " << jaccardSimilarity * 100 << "%" << endl;
+            cout << "Jaccard similarity: " << jaccardSimilarity * 100 << "%" << endl;
         
     }
 }
