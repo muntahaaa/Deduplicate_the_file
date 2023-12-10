@@ -68,20 +68,11 @@ void readcontentInInteger(string fileName)
 
 int main()
 {
-<<<<<<< HEAD
     directoryPath = "/home/muntaha/Desktop/SPL-new/dummy2"; 
 
     listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
 
     printProperties(directoryItems,directoryNames);
-    similarityChecking(directoryItems,fcb,directoryNames);
+    //similarityChecking(directoryItems,fcb,directoryNames);
     checkEquality(directoryItems,fcb,directoryNames);
-=======
-    directoryPath = "/home/muntaha/Desktop/SPL-01/dummy"; 
-
-    listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
-
-    printProperties(directoryItems);
-    checkEquality(directoryItems,fcb);
->>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
 }

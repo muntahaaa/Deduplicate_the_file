@@ -59,7 +59,6 @@ struct FileControlBlock
 };
 
 bool loadFile(const string &filename, FileControlBlock &fcb, const string files);
-bool loadFile(const string &filename, FileControlBlock &fcb);
 FileStatus displayStatus(const FileControlBlock &fcb);
 FileType displaytype(const FileControlBlock &fcb, struct stat fileInfo);
 vector<CombinedPermission> displayPermission(const FileControlBlock &fcb, struct stat fileInfo);

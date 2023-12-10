@@ -13,11 +13,7 @@ struct stat fileInfo;
 
 using namespace std;
 
-<<<<<<< HEAD
 bool loadFile(const string &filename, FileControlBlock &fcb, const string files)
-=======
-bool loadFile(const string &filename, FileControlBlock &fcb)
->>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
 {
     ifstream file(filename, ios::binary);
     if (!file.is_open())
@@ -39,11 +35,7 @@ bool loadFile(const string &filename, FileControlBlock &fcb)
     fcb.hash = Hashvalue;
 
     fcb.filename = filename;
-<<<<<<< HEAD
     fcb.name=files;
-=======
-    
->>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
 
     FileStatus fs = displayStatus(fcb);
 
@@ -213,11 +205,7 @@ string combinedPermissionToString(CombinedPermission permission)
 void displayFileInformation(const FileControlBlock &fcb)
 {
     struct stat fileInfo;
-<<<<<<< HEAD
     cout << "File Name: " << fcb.name << endl;
-=======
-    cout << "File Name: " << fcb.filename << endl;
->>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
     cout << "File Size: " << fcb.size << " bytes" << endl;
     cout << "Hash Value: " << fcb.hash << endl;
     cout << "File status: " << fileStatusToString(fcb.status) << endl;
@@ -232,11 +220,6 @@ void displayFileInformation(const FileControlBlock &fcb)
         cout << combinedPermissionToString(permission) << " " << endl;
     }
     cout << endl;
-<<<<<<< HEAD
     //cout << "File contents: \n"
          //<< content << endl;
-=======
-    cout << "File contents: \n"
-         << content << endl;
->>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
 }
