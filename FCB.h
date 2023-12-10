@@ -49,11 +49,7 @@ string content;
 struct FileControlBlock
 {
     string filename;
-<<<<<<< HEAD
     string name;
-=======
-    
->>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
     vector<string> content;
     string hash;
     size_t size;
@@ -62,11 +58,8 @@ struct FileControlBlock
     FileStatus status;
 };
 
-<<<<<<< HEAD
 bool loadFile(const string &filename, FileControlBlock &fcb, const string files);
-=======
 bool loadFile(const string &filename, FileControlBlock &fcb);
->>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
 FileStatus displayStatus(const FileControlBlock &fcb);
 FileType displaytype(const FileControlBlock &fcb, struct stat fileInfo);
 vector<CombinedPermission> displayPermission(const FileControlBlock &fcb, struct stat fileInfo);
