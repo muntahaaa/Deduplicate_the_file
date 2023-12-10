@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+<<<<<<< HEAD
 #include <cstdio>
 #include "FCB.cpp"
 #include "JaccardSimilarity.cpp"
@@ -13,14 +14,32 @@ vector<char> charVector2;
 void printProperties(vector<string> directoryItems, vector<string> &names)
 {
     int count = 0;
+=======
+
+// #include "read_file.cpp"
+// #include "FCB.h"
+#include "FCB.cpp"
+using namespace std;
+vector<string> directoryNames;
+string files;
+
+void printProperties(vector<string> directoryItems)
+{
+
+>>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
     cout << "File properties are: " << endl;
     for (const string &itemPath : directoryItems)
     {
 
         files = itemPath;
+<<<<<<< HEAD
         nameOfFile = names[count++];
 
         if (loadFile(files, fcb, nameOfFile))
+=======
+
+        if (loadFile(files, fcb))
+>>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
         {
             displayFileInformation(fcb);
 
@@ -28,6 +47,7 @@ void printProperties(vector<string> directoryItems, vector<string> &names)
         }
     }
 }
+<<<<<<< HEAD
 
 vector<char> convertToChar(const vector<string>& content) {
     string concatenatedString;
@@ -102,11 +122,28 @@ void checkEquality(vector<string> directoryItems, FileControlBlock &fcb, vector<
         loadFile(filePath, fcb, fname);
 
         files.push_back(make_pair(fcb.name, fcb.hash));
+=======
+//undone!!!
+void checkEquality(vector<string> directoryItems,FileControlBlock &fcb){
+    // vector<string>file1;
+    // vector<string>file2;
+    vector<pair<string, string>> files;
+    string filePath;
+    
+    for(size_t i=0;i<directoryItems.size();i++){
+        filePath=directoryItems[i];
+            loadFile(filePath,fcb);
+           
+            files.push_back(make_pair(fcb.filename, fcb.hash));
+            
+        
+>>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
     }
 
     bool similarityFound = false;
     string fileNametoDelete;
 
+<<<<<<< HEAD
     for (size_t i = 0; i < directoryItems.size(); i++)
     {
         for (size_t j = i + 1; j < directoryItems.size(); j++)
@@ -166,4 +203,32 @@ void checkEquality(vector<string> directoryItems, FileControlBlock &fcb, vector<
 
          }
     }  */
+=======
+    for(size_t i=0;i<directoryItems.size();i++){
+        for(size_t j=i+1;j<directoryItems.size();j++){
+            if(files[i].second==files[j].second){
+                similarityFound = true;
+                cout<<"similarity found"<<endl;
+               cout << files[i].first << " and " << files[j].first << endl;
+               fileNametoDelete=files[i].first;
+               int result=remove("fileNametoDelete");
+               
+               
+               if(result==0){
+                 cout << files[i].first << " and " << endl<<files[j].first <<" has been deleted"<<endl;
+               }
+               else cout<<"Error in deleting";  //need to use file name instead of file path
+
+               
+    
+            }
+            
+        }
+    }
+
+    if (!similarityFound) {
+        cout << "No similarity found" << endl;
+    }
+    
+>>>>>>> 7cb80e9cf977b2d04aef368cb23f8878338f1754
 }
