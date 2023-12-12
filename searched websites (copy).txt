@@ -7,3 +7,5 @@ https://en.wikipedia.org/wiki/Hash_function
 https://www.ibm.com/docs/en/i/7.2?topic=ssw_ibm_i_72/apis/stat.html
 https://stackoverflow.com/questions/47561721/c-sys-stat-h-find-file-type
 https://www.geeksforgeeks.org/implement-secure-hashing-algorithm-512-sha-512-as-functional-programming-paradigm/
+https://www.geeksforgeeks.org/find-the-jaccard-index-and-jaccard-distance-between-the-two-given-sets/
+https://www.google.com/search?q=sys%2Fstat&sca_esv=590053957&ei=TDd4ZZn_Gu3D1e8PiPKEKA&ved=0ahUKEwiZ1ajO2YmDAxXtYfUHHQg5AQUQ4dUDCBA&uact=5&oq=sys%2Fstat&gs_lp=Egxnd3Mtd2l6LXNlcnAiCHN5cy9zdGF0MgUQABiABDIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgsQABiABBiKBRiGA0iXSVCSCVjGMHAEeACQAQKYAbgCoAHzFaoBBzAuNy41LjG4AQPIAQD4AQGoAgrCAhQQABiABBjjBBjpBBjqAhi0AtgBAcICFBAAGIkFGOMEGOkEGOoCGLQC2AEBwgIWEAAYAxiPARjlAhjqAhi0AhiMA9gBAsICCxAAGIAEGIoFGJECwgIKEAAYgAQYigUYQ8ICCBAuGIAEGLEDwgIIEAAYgAQYsQPCAgsQABiABBixAxiDAcICCxAuGIAEGLEDGIMBwgINEAAYgAQYigUYQxixA8ICBRAuGIAEwgIOEC4YgAQYigUYsQMYgwHCAgsQLhiABBjHARjRA8ICDhAAGIAEGIoFGLEDGIMBwgIQEAAYgAQYigUYkQIYRhj5AcICJxAAGIAEGIoFGJECGEYY-QEYlwUYjAUY3QQYRhj0Axj1Axj2A9gBA-IDBBgAIEGIBgG6BgQIARgHugYECAIYCroGBggDEAEYEw&sclient=gws-wiz-serp

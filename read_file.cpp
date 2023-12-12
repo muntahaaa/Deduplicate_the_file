@@ -45,11 +45,12 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
 
 int main()
 {
-    directoryPath = "/home/muntaha/Desktop/SPL-new/dummy2";
+    directoryPath = "/home/muntaha/Desktop/desktopDummy";
 
     listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
 
     printProperties(directoryItems, directoryNames);
     similarityChecking(directoryItems, fcb, directoryNames);
-    checkEquality(directoryItems, fcb, directoryNames,directoryPath);
+    //checkEquality(directoryItems, fcb, directoryNames,directoryPath);
+    checkEqualities(directoryItems, fcb, directoryNames,directoryPath);
 }
