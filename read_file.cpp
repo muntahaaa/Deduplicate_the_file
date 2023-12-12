@@ -45,7 +45,7 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
 
 int main()
 {
-    directoryPath = "/home/muntaha/Desktop/desktopDummy";
+    directoryPath = "/home/muntaha/Desktop/SPL-new/dummy2";
 
     listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
 

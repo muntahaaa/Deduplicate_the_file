@@ -61,12 +61,12 @@ void intersectionVectors(const vector<char> &vec1, const vector<char> &vec2, vec
     }
 }
 
-void printNotMatchedCharacters(const vector<char> &vec1, const vector<char> &vec2)
+void printNotMatchedCharacters(const vector<char> &vec1, const vector<char> &vec2, string file1, string file2)
 {
     unordered_set<char> set1(vec1.begin(), vec1.end());
     unordered_set<char> set2(vec2.begin(), vec2.end());
 
-    cout << "Unmatched characters: ";
+    cout << "Unmatched characters between "<<file1<<" and "<<file2<<": ";
     for (const char &c : set1)
     {
         if (set2.count(c) <= 0)

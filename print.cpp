@@ -91,11 +91,11 @@ void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, ve
 
             vector<char> charVector2(content.begin(), content.end());
            
-            cout << "path1 " << path1 << endl;
+            /*cout << "path1 " << path1 << endl;
             cout << "file1 " << filename1 << endl;
 
             displayVector(charVector1, "File 1");
-            displayVector(charVector2, "File 2");
+            displayVector(charVector2, "File 2");*/
 
             vector<char> unionVector;
             unionVectors(charVector1, charVector2, unionVector);
@@ -103,7 +103,7 @@ void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, ve
             vector<char> intersectionVector;
             intersectionVectors(charVector1, charVector2, intersectionVector);
 
-            printNotMatchedCharacters(charVector1, intersectionVector);
+            printNotMatchedCharacters(charVector1, intersectionVector,filename1,filename2);
 
             double jaccardSimilarity = static_cast<double>(intersectionVector.size()) / unionVector.size();
             cout << "\nJaccard similarity: " << jaccardSimilarity * 100 << "%" << endl

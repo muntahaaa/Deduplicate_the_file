@@ -1,13 +1,6 @@
 # SPL-01
-read_file.cpp includes print.cpp and print.cpp includes FCB.cpp
 
-eventually read_file.cpp has main function and running it will be able to run all the three cpp files.
-
-void displayFileInformation(const FileControlBlock &fcb) function of FCB.cpp contains contents of each file
-
-FCB.cpp includes Hash.cpp and void displayFileInformation(const FileControlBlock &fcb) function of FCB.cpp can generate Hash value for every file
-
-duplicate files have same hash value
-
-print.cpp contains check equality function which can identify similar files using hash value
-jaccard similarity can measure % of similarity between 2 string contents 
+read_file.cpp contains main funtion. To the main function, we need to provide abs path of directory to access all the files in between it. 
+FCB.cpp calculates all meta Data (gets hash value using Hash.cpp)
+print.cpp firstly prints all the meta data, then using JaccardSimilarity.cpp it it gets (nxn) similarity matrix and prints it. 
+Then it checks if all the attributes (contents, hash, type, status, permission, extension) are same or not. If same then 1 one will be kept and the other will be deleted. 
