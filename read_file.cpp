@@ -51,5 +51,5 @@ int main()
 
     printProperties(directoryItems, directoryNames);
     similarityChecking(directoryItems, fcb, directoryNames);
-    checkEquality(directoryItems, fcb, directoryNames);
+    checkEquality(directoryItems, fcb, directoryNames,directoryPath);
 }
