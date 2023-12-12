@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <fstream> // Required for file stream operations
+#include <fstream>
 #include <vector>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -35,44 +35,21 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
                 names.push_back(itemName);
                 string itemPath = string(directorypath) + "/" + itemName;
                 paths.push_back(itemPath);
-                 cout<<"path: "<<itemPath<<endl; //it has been sent to print properties. (whole path)
-                 cout<<"name: "<<itemName<<endl;//only file name.
+                cout << "path: " << itemPath << endl;
+                cout << "name: " << itemName << endl;
             }
         }
     }
     closedir(dir);
 }
-void readcontentInInteger(string fileName)
-{
-    ifstream inputFile(fileName);
-
-    if (!inputFile.is_open())
-    {
-        cerr << "Failed to open the file." << endl;
-    }
-
-    char readData;
-
-    bool flag = false;
-
-    // to read data and represent it in Int form
-    cout << "data represented in Int format:\n";
-    while (inputFile.read(&readData, sizeof(readData)))
-    {
-        cout << static_cast<int>(readData) << " ";
-        flag = true;
-    }
-    if (flag)
-        cout << "\nFile " << fileName << " read successfully." << endl;
-}
 
 int main()
 {
-    directoryPath = "/home/muntaha/Desktop/SPL-new/dummy2"; 
+    directoryPath = "/home/muntaha/Desktop/SPL-new/dummy2";
 
     listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
 
-    printProperties(directoryItems,directoryNames);
-    //similarityChecking(directoryItems,fcb,directoryNames);
-    checkEquality(directoryItems,fcb,directoryNames);
+    printProperties(directoryItems, directoryNames);
+    similarityChecking(directoryItems, fcb, directoryNames);
+    checkEquality(directoryItems, fcb, directoryNames);
 }

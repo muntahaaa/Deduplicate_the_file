@@ -5,7 +5,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
 #include "FCB.h"
 #include "Hash.cpp"
 FileControlBlock fcb;
@@ -22,10 +21,9 @@ bool loadFile(const string &filename, FileControlBlock &fcb, const string files)
         return false;
     }
 
-    // moving from the beginning of the file upto end will help to get file size
-    file.seekg(0, ios::end); // move to the end of file
+    file.seekg(0, ios::end);
     fcb.size = static_cast<size_t>(file.tellg());
-    file.seekg(0, ios::beg); // move to the beg of file
+    file.seekg(0, ios::beg);
 
     fcb.content.resize(fcb.size);
 
@@ -35,7 +33,7 @@ bool loadFile(const string &filename, FileControlBlock &fcb, const string files)
     fcb.hash = Hashvalue;
 
     fcb.filename = filename;
-    fcb.name=files;
+    fcb.name = files;
 
     FileStatus fs = displayStatus(fcb);
 
@@ -201,7 +199,6 @@ string combinedPermissionToString(CombinedPermission permission)
     }
 }
 
-
 void displayFileInformation(const FileControlBlock &fcb)
 {
     struct stat fileInfo;
@@ -220,6 +217,28 @@ void displayFileInformation(const FileControlBlock &fcb)
         cout << combinedPermissionToString(permission) << " " << endl;
     }
     cout << endl;
-    //cout << "File contents: \n"
-         //<< content << endl;
+    // cout << "File contents: \n"
+    //<< content << endl;
+}
+
+void readcontentInInteger(string fileName)
+{
+    ifstream inputFile(fileName);
+
+    if (!inputFile.is_open())
+    {
+        cerr << "Failed to open the file." << endl;
+    }
+
+    char readData;
+
+    bool flag = false;
+    cout << "data represented in Int format:\n";
+    while (inputFile.read(&readData, sizeof(readData)))
+    {
+        cout << static_cast<int>(readData) << " ";
+        flag = true;
+    }
+    if (flag)
+        cout << "\nFile " << fileName << " read successfully." << endl;
 }
