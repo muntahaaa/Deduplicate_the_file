@@ -5,6 +5,12 @@
 #include <algorithm>
 #include "FCB.cpp"
 #include "JaccardSimilarity.cpp"
+
+#define ANSI_RESET "\033[0m"
+#define ANSI_WHITE "\033[97m"
+#define ANSI_ON_WHITE "\033[107m"
+#define ANSI_ON_YELLOW "\033[43m"
+
 using namespace std;
 vector<string> directoryNames;
 string files, nameOfFile;
@@ -15,7 +21,8 @@ vector<char> charVector2;
 void printProperties(vector<string> directoryItems, vector<string> &names)
 {
     int count = 0;
-    cout << "File properties are: " << endl;
+    cout << ANSI_ON_YELLOW << ANSI_BOLD << "\nFile properties are: "
+         << ANSI_RESET << endl;
     for (const string &itemPath : directoryItems)
     {
 
@@ -32,7 +39,9 @@ void printProperties(vector<string> directoryItems, vector<string> &names)
 }
 void printMat(double mat[100][100], vector<string> directoryItems)
 {
-    cout << "\nJaccard Similarity Matrix: \n";
+
+    cout << ANSI_ON_YELLOW << ANSI_BOLD << "\nJaccard Similarity Matrix:"
+         << ANSI_RESET << endl;
     for (size_t i = 0; i < directoryItems.size(); i++)
     {
         for (size_t j = 0; j < directoryItems.size(); j++)
@@ -70,6 +79,8 @@ vector<char> convertToChar(vector<string> contents)
 }
 void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, vector<string> &names)
 {
+    cout << ANSI_ON_YELLOW << ANSI_BOLD << "Text Similarity Between Files Are:"
+         << ANSI_RESET << endl;
     double jaccardMat[100][100];
     for (size_t i = 0; i < directoryItems.size(); i++)
     {
@@ -105,7 +116,8 @@ void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, ve
             printNotMatchedCharacters(charVector1, intersectionVector, filename1, filename2);
 
             double jaccardSimilarity = static_cast<double>(intersectionVector.size()) / unionVector.size();
-            cout << "\nJaccard similarity: " << jaccardSimilarity * 100 << "%" << endl
+            cout << ANSI_BOLD "\nJaccard similarity: " << ANSI_RESET
+                 << ANSI_ON_WHITE << ANSI_BOLD << jaccardSimilarity * 100 << "%" << ANSI_RESET << endl
                  << endl;
 
             double similar = jaccardSimilarity * 100;
@@ -166,7 +178,7 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
 
     for (size_t i = 0; i < directoryItems.size(); i++)
     {
-        FileControlBlocks currentFile; // Create a new instance for each file
+        FileControlBlocks currentFile;
         loadFile(directoryItems[i], fcb, directoryNames[i]);
 
         currentFile.filename = fcb.filename;
@@ -176,7 +188,7 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
         currentFile.size = fcb.size;
         currentFile.type = fcb.type;
         currentFile.status = fcb.status;
-        currentFile.permissions = displayFileInformation(fcb);
+        currentFile.permissions = returnPermission(fcb);
         currentFile.extension = getFileExtension(directoryItems[i]);
 
         fcbs.push_back(currentFile);
@@ -187,14 +199,17 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
 
     for (size_t i = 0; i < directoryItems.size(); i++)
     {
-         cout<<fcbs[i].name<<" "<<fcbs[i].content<<"="<<fcbs[i].permissions<<endl<<endl;
+        cout << fcbs[i].name << " " << fcbs[i].content << "=" << fcbs[i].permissions << endl
+             << endl;
         for (size_t j = i + 1; j < directoryItems.size(); j++)
         {
 
             if (fcbs[i] == fcbs[j] && i != j)
             {
-                cout << "similarity found in ";
-                cout << fcbs[i].name << " and " << fcbs[j].name << endl;
+                cout << ANSI_ON_WHITE << "similarity found in ";
+                cout << ANSI_BOLD << fcbs[i].name << ANSI_RESET
+                     << ANSI_ON_WHITE << " and " << ANSI_BOLD << fcbs[j].name
+                     << ANSI_RESET << endl;
                 fileNametoDelete = fcbs[j].name;
 
                 const char *fileName = fileNametoDelete.c_str();
@@ -205,7 +220,9 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
 
                 if (result == 0)
                 {
-                    cout << "duplicate file " << fileNametoDelete << " has been deleted" << endl;
+                    cout << ANSI_ON_WHITE << "duplicate file " << ANSI_BOLD
+                         << fileNametoDelete << ANSI_RESET
+                         << ANSI_ON_WHITE << " has been deleted" << ANSI_RESET << endl;
                 }
                 else
                 {
@@ -218,6 +235,7 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
 
     if (!similarityFound)
     {
-        cout << "No similarity found" << endl;
+        cout << ANSI_ON_WHITE << ANSI_BOLD << "No similarity found"
+             << ANSI_RESET << endl;
     }
 }

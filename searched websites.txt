@@ -1,9 +1,0 @@
-https://www.edureka.co/blog/file-handling-in-cpp/
-https://www.google.com/search?channel=fs&client=ubuntu-sn&q=file+stream+classes+in+c%2B%2B
-https://www.geeksforgeeks.org/file-handling-c-classes/
-https://www.geeksforgeeks.org/tellg-function-c-example/
-https://www.velocenetwork.com/tech/what-is-a-file-control-block/
-https://en.wikipedia.org/wiki/Hash_function
-https://www.ibm.com/docs/en/i/7.2?topic=ssw_ibm_i_72/apis/stat.html
-https://stackoverflow.com/questions/47561721/c-sys-stat-h-find-file-type
-https://www.geeksforgeeks.org/implement-secure-hashing-algorithm-512-sha-512-as-functional-programming-paradigm/

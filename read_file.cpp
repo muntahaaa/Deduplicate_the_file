@@ -19,10 +19,12 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
     dir = opendir(directorypath);
     if (!dir)
     {
-        cerr << "Error in opening directory " << directorypath << endl;
+        cerr << "Error in opening directory " << directorypath
+             << endl;
     }
     else
-        cout << "directory opened" << endl;
+        cout << "directory opened"
+             << endl;
     while (entry = readdir(dir))
     {
 
@@ -39,17 +41,28 @@ void listOfFilesInDirectory(const char *directorypath, vector<string> &paths, ve
                 cout << "name: " << itemName << endl;
             }
         }
+        else
+        {
+            cout << "Not a regular file."
+                 << endl;
+        }
     }
     closedir(dir);
 }
 
 int main()
 {
-    directoryPath = "/home/muntaha/Desktop/SPL-new/dummy2";
+
+    string input;
+
+    cout << "Enter a directory path: ";
+    cin >> input;
+
+    directoryPath = input.c_str();
 
     listOfFilesInDirectory(directoryPath, directoryItems, directoryNames);
 
     printProperties(directoryItems, directoryNames);
     similarityChecking(directoryItems, fcb, directoryNames);
-    checkEqualities(directoryItems, fcb, directoryNames,directoryPath);
+    checkEqualities(directoryItems, fcb, directoryNames, directoryPath);
 }

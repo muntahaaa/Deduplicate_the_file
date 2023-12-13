@@ -5,10 +5,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include<sstream>
+#include <sstream>
 #include <set>
 #include "FCB.h"
 #include "Hash.cpp"
+
+#define ANSI_RESET "\033[0m"
+#define ANSI_BOLD "\033[1m"
+#define ANSI_ITALIC "\033[3m"
+
 FileControlBlock fcb;
 struct stat fileInfo;
 string concatenedPermission;
@@ -17,11 +22,15 @@ ostringstream oss;
 
 bool loadFile(const string &filename, FileControlBlock &fcb, const string files)
 {
+    string Hashvalue;
     ifstream file(filename, ios::binary);
     if (!file.is_open())
     {
         cerr << "Error: Unable to open file '" << filename << "'" << endl;
         return false;
+    }
+    else
+    {
     }
 
     file.seekg(0, ios::end);
@@ -32,7 +41,7 @@ bool loadFile(const string &filename, FileControlBlock &fcb, const string files)
 
     content.assign((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
-    string Hashvalue = SHA512(content);
+    Hashvalue = SHA512(content);
     fcb.hash = Hashvalue;
 
     fcb.filename = filename;
@@ -98,6 +107,7 @@ FileType displaytype(const FileControlBlock &fcb, struct stat fileInfo)
 {
     if (stat(fcb.filename.c_str(), &fileInfo) != 0)
         cerr << "Unable to detect file type " << endl;
+
     cout << "File Type: ";
 
     if ((fileInfo.st_mode & S_IFMT) == __S_IFDIR)
@@ -105,6 +115,7 @@ FileType displaytype(const FileControlBlock &fcb, struct stat fileInfo)
 
     else
         cout << "Regular" << endl;
+
     return fcb.type;
 }
 string fileTypeToString(FileType type)
@@ -202,55 +213,68 @@ string combinedPermissionToString(CombinedPermission permission)
     }
 }
 
-string displayFileInformation(const FileControlBlock &fcb)
-{   
+void displayFileInformation(const FileControlBlock &fcb)
+{
     set<string> uniquePermissions;
     struct stat fileInfo;
     string permit;
 
-    cout << "File Name: " << fcb.name << endl;
-    cout << "File Size: " << fcb.size << " bytes" << endl;
-    cout << "Hash Value: " << fcb.hash << endl;
-    cout << "File status: " << fileStatusToString(fcb.status) << endl;
-    cout << "File Type: " << fileTypeToString(fcb.type) << endl;
+    cout << ANSI_BOLD << "File Name: " << ANSI_RESET
+         << ANSI_ITALIC << fcb.name
+         << ANSI_RESET << endl;
+
+    cout << ANSI_BOLD << "File Size: " << ANSI_RESET
+         << ANSI_ITALIC << fcb.size << " bytes"
+         << ANSI_RESET << endl;
+
+    cout << ANSI_BOLD << "Hash Value: " << ANSI_RESET
+         << ANSI_ITALIC << fcb.hash
+         << ANSI_RESET << endl;
+
+    cout << ANSI_BOLD << "File status: " << ANSI_RESET
+         << ANSI_ITALIC << fileStatusToString(fcb.status)
+         << ANSI_RESET << endl;
+
+    cout << ANSI_BOLD << "File Type: " << ANSI_RESET
+         << ANSI_ITALIC << fileTypeToString(fcb.type)
+         << ANSI_RESET << endl;
 
     vector<CombinedPermission> permissionsVector = displayPermission(fcb, fileInfo);
 
-    cout << "File Permissions: " << endl;
+    cout << ANSI_BOLD << "File Permissions: "
+         << ANSI_RESET << endl;
 
     for (const CombinedPermission &permission : permissionsVector)
-    {  
-        cout << combinedPermissionToString(permission) << " " << endl;
-       
+    {
+        cout << ANSI_ITALIC << combinedPermissionToString(permission) << " "
+             << ANSI_RESET << endl;
     }
 
-
     for (const CombinedPermission &permission : permissionsVector)
-    {  
-       
-        permit=combinedPermissionToString(permission)+" ";
+    {
+
+        permit = combinedPermissionToString(permission) + " ";
         uniquePermissions.insert(permit);
     }
 
-
-
-
     stringstream ss;
-    for (const string &uniquePermission : uniquePermissions) {
+    for (const string &uniquePermission : uniquePermissions)
+    {
         ss << uniquePermission << " ";
     }
-    concatenedPermission=ss.str();
+    concatenedPermission = ss.str();
 
-    
-    
-     cout << "File contents: \n"
-    << content << endl;
+    cout << ANSI_BOLD << "File contents: \n"
+         << ANSI_RESET
+         << content << endl;
 
-    cout<<endl;
-
-     return concatenedPermission;
+    cout << endl;
 }
 
+string returnPermission(const FileControlBlock &fcb)
+{
+    return concatenedPermission;
+}
 
 void readcontentInInteger(string fileName)
 {
@@ -271,5 +295,6 @@ void readcontentInInteger(string fileName)
         flag = true;
     }
     if (flag)
-        cout << "\nFile " << fileName << " read successfully." << endl;
+        cout << "\nFile " << fileName 
+        << " read successfully." << endl;
 }

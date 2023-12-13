@@ -4,6 +4,10 @@
 #include <algorithm>
 #include <unordered_set>
 
+#define ANSI_RESET "\033[0m"
+#define ANSI_BOLD "\033[1m"
+#define ANSI_ITALIC "\033[3m"
+
 using namespace std;
 
 void readCharactersFromFile(const string &filepath, vector<char> &charVector)
@@ -66,14 +70,17 @@ void printNotMatchedCharacters(const vector<char> &vec1, const vector<char> &vec
     unordered_set<char> set1(vec1.begin(), vec1.end());
     unordered_set<char> set2(vec2.begin(), vec2.end());
 
-    if(file1!=file2){
-    cout << "Unmatched characters between "<<file1<<" and "<<file2<<": ";
-    for (const char &c : set1)
+    if (file1 != file2)
     {
-        if (set2.count(c) <= 0)
+        cout << ANSI_ITALIC << "Unmatched characters between "
+             << ANSI_BOLD << file1 << ANSI_RESET << ANSI_ITALIC << " and "
+             << ANSI_BOLD << file2 << ": " << ANSI_RESET;
+        for (const char &c : set1)
         {
-            cout << c;
+            if (set2.count(c) <= 0)
+            {
+                cout << c;
+            }
         }
-    }
     }
 }

@@ -4,7 +4,8 @@ typedef unsigned long long int int64;
  
 int64 Message[80];
  
-
+// Stores the hexadecimal values for
+// calculating hash values
 const int64 Constants[80]
     = { 0x428a2f98d728ae22, 0x7137449123ef65cd,
         0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc,
@@ -47,7 +48,8 @@ const int64 Constants[80]
         0x4cc5d4becb3e42b6, 0x597f299cfc657e2a,
         0x5fcb6fab3ad6faec, 0x6c44198c4a475817 };
  
-
+// Function to convert a binary string
+// to hexa-decimal value
 string gethex(string bin)
 {
     if (bin == "0000")
@@ -84,28 +86,30 @@ string gethex(string bin)
         return "f";
 };
  
-
+// Function to convert a decimal value
+// to hexa decimal value
 string decimaltohex(int64 deci)
 {
-   
+    // Stores the value as string
     string EQBIN = bitset<64>(deci).to_string();
  
-    
+    // Stores the equivalent hexa decimal
     string hexstring = "";
     string temp;
  
-   
+    // Traverse the string EQBIN
     for (unsigned int i = 0;
          i < EQBIN.length(); i += 4) {
         temp = EQBIN.substr(i, 4);
         hexstring += gethex(temp);
     }
  
-   
+    // Return the hexstring
     return hexstring;
 }
  
-
+// Function to convert a binary
+// string to decimal value
 int64 BintoDec(string bin)
 {
  
@@ -114,98 +118,102 @@ int64 BintoDec(string bin)
     return value;
 }
  
-
+// Function to right rotate x by n bits
 int64 rotate_right(int64 x, int n)
 {
     return (x >> n) | (x << (64 - n));
 }
  
-
+// Function to right shift x by n bits
 int64 shift_right(int64 x, int n)
 {
     return (x >> n);
 }
  
-
+// Function to divide the string
+// into chunks
 void separator(string getBlock)
 {
-   
+    // Stores the size of chunks
     int chunknum = 0;
  
-    
+    // Traverse the string S
     for (unsigned int i = 0;
          i < getBlock.length();
          i += 64, ++chunknum) {
  
-        
+        // Update the Message[chunknum]
         Message[chunknum]
             = BintoDec(getBlock.substr(i, 64));
     }
  
-   
+    // Iterate over the range [16, 80]
     for (int g = 16; g < 80; ++g) {
  
-        
+        // Find the WordA
         int64 WordA = rotate_right(Message[g - 2], 19)
                       ^ rotate_right(Message[g - 2], 61)
                       ^ shift_right(Message[g - 2], 6);
  
-       
+        // Find the WordB
         int64 WordB = Message[g - 7];
  
-       
+        // Find the WordC
         int64 WordC = rotate_right(Message[g - 15], 1)
                       ^ rotate_right(Message[g - 15], 8)
                       ^ shift_right(Message[g - 15], 7);
  
-        
+        // Find the WordD
         int64 WordD = Message[g - 16];
  
-       
+        // Find the resultant code
         int64 T = WordA + WordB + WordC + WordD;
  
-       
+        // Return the resultant Hash Code
         Message[g] = T;
     }
 }
  
-
+// Function to find the major of a, b, c
 int64 maj(int64 a, int64 b, int64 c)
 {
     return (a & b) ^ (b & c) ^ (c & a);
 }
  
-
+// Function to find the ch value of a,
+// b, and c
 int64 Ch(int64 e, int64 f, int64 g)
 {
     return (e & f) ^ (~e & g);
 }
  
-
+// Function to find the Bitwise XOR with
+// the right rotate over 14, 18, and 41
 int64 sigmaE(int64 e)
 {
-    
+    // Return the resultant value
     return rotate_right(e, 14)
            ^ rotate_right(e, 18)
            ^ rotate_right(e, 41);
 }
  
-
+// Function to find the Bitwise XOR with
+// the right rotate over 28, 34, and 39
 int64 sigmaA(int64 a)
 {
  
-   
+    // Return the resultant value
     return rotate_right(a, 28)
            ^ rotate_right(a, 34)
            ^ rotate_right(a, 39);
 }
  
-
+// Function to generate the hash code
 void Func(int64 a, int64 b, int64 c,
           int64& d, int64 e, int64 f,
           int64 g, int64& h, int K)
 {
-   
+    // Find the Hash Code
     int64 T1 = h + Ch(e, f, g) + sigmaE(e) + Message[K]
                + Constants[K];
     int64 T2 = sigmaA(a) + maj(a, b, c);
@@ -214,10 +222,11 @@ void Func(int64 a, int64 b, int64 c,
     h = T1 + T2;
 }
  
-
+// Function to convert the hash value
+// of a given string
 string SHA512(string myString)
 {
-   
+    // Stores the 8 blocks of size 64
     int64 A = 0x6a09e667f3bcc908;
     int64 B = 0xbb67ae8584caa73b;
     int64 C = 0x3c6ef372fe94f82b;
@@ -231,72 +240,78 @@ string SHA512(string myString)
  
     stringstream fixedstream;
  
-   
+    // Traverse the string S
     for (int i = 0;
          i < myString.size(); ++i) {
  
-       
+        // Add the character to stream
         fixedstream << bitset<8>(myString[i]);
     }
  
-   
+    // Stores string of size 1024
     string s1024;
  
+    // Stores the string in the
+    // fixedstream
     s1024 = fixedstream.str();
  
-  
+    // Stores the length of string
     int orilen = s1024.length();
     int tobeadded;
  
-   
+    // Find modded string length
     int modded = s1024.length() % 1024;
  
-  
+    // If 1024-128 is greater than modded
     if (1024 - modded >= 128) {
         tobeadded = 1024 - modded;
     }
  
- 
+    // Else if 1024-128 is less than modded
     else if (1024 - modded < 128) {
         tobeadded = 2048 - modded;
     }
  
- 
+    // Append 1 to string
     s1024 += "1";
  
-   
+    // Append tobeadded-129 zeros
+    // in the string
     for (int y = 0; y < tobeadded - 129; y++) {
         s1024 += "0";
     }
  
-  
+    // Stores the binary representation
+    // of string length
     string lengthbits
         = std::bitset<128>(orilen).to_string();
  
- 
+    // Append the lengthbits to string
     s1024 += lengthbits;
  
-   
+    // Find the count of chunks of
+    // size 1024 each
     int blocksnumber = s1024.length() / 1024;
  
-  
+    // Stores the numbering of chunks
     int chunknum = 0;
  
-   
+    // Stores hash value of each blocks
     string Blocks[blocksnumber];
  
-  
+    // Traverse the string s1024
     for (int i = 0; i < s1024.length();
          i += 1024, ++chunknum) {
         Blocks[chunknum] = s1024.substr(i, 1024);
     }
  
-  
+    // Traverse the array Blocks[]
     for (int letsgo = 0;
          letsgo < blocksnumber;
          ++letsgo) {
  
-     
+        // Divide the current string
+        // into 80 blocks size 16 each
         separator(Blocks[letsgo]);
  
         AA = A;
@@ -310,10 +325,10 @@ string SHA512(string myString)
  
         int count = 0;
  
-      
+        // Find hash values
         for (int i = 0; i < 10; i++) {
  
-         
+            // Find the Hash Values
  
             Func(A, B, C, D, E, F, G, H, count);
             count++;
@@ -333,7 +348,8 @@ string SHA512(string myString)
             count++;
         }
  
-        
+        // Update the value of A, B, C,
+        // D, E, F, G, H
  
         A += AA;
         B += BB;
@@ -347,7 +363,8 @@ string SHA512(string myString)
  
     stringstream output;
  
-    
+    // Print the hexadecimal value of
+    // strings as the resultant SHA-512
     output << decimaltohex(A);
     output << decimaltohex(B);
     output << decimaltohex(C);
@@ -357,7 +374,7 @@ string SHA512(string myString)
     output << decimaltohex(G);
     output << decimaltohex(H);
  
-  
+    // Return the string
     return output.str();
 }
  
