@@ -5,12 +5,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include<sstream>
+#include <set>
 #include "FCB.h"
 #include "Hash.cpp"
 FileControlBlock fcb;
 struct stat fileInfo;
-
+string concatenedPermission;
 using namespace std;
+ostringstream oss;
 
 bool loadFile(const string &filename, FileControlBlock &fcb, const string files)
 {
@@ -199,9 +202,12 @@ string combinedPermissionToString(CombinedPermission permission)
     }
 }
 
-void displayFileInformation(const FileControlBlock &fcb)
-{
+string displayFileInformation(const FileControlBlock &fcb)
+{   
+    set<string> uniquePermissions;
     struct stat fileInfo;
+    string permit;
+
     cout << "File Name: " << fcb.name << endl;
     cout << "File Size: " << fcb.size << " bytes" << endl;
     cout << "Hash Value: " << fcb.hash << endl;
@@ -213,13 +219,38 @@ void displayFileInformation(const FileControlBlock &fcb)
     cout << "File Permissions: " << endl;
 
     for (const CombinedPermission &permission : permissionsVector)
-    {
+    {  
         cout << combinedPermissionToString(permission) << " " << endl;
+       
     }
-    cout << endl;
-    // cout << "File contents: \n"
-    //<< content << endl;
+
+
+    for (const CombinedPermission &permission : permissionsVector)
+    {  
+       
+        permit=combinedPermissionToString(permission)+" ";
+        uniquePermissions.insert(permit);
+    }
+
+
+
+
+    stringstream ss;
+    for (const string &uniquePermission : uniquePermissions) {
+        ss << uniquePermission << " ";
+    }
+    concatenedPermission=ss.str();
+
+    
+    
+     cout << "File contents: \n"
+    << content << endl;
+
+    cout<<endl;
+
+     return concatenedPermission;
 }
+
 
 void readcontentInInteger(string fileName)
 {

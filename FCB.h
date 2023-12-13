@@ -62,5 +62,5 @@ bool loadFile(const string &filename, FileControlBlock &fcb, const string files)
 FileStatus displayStatus(const FileControlBlock &fcb);
 FileType displaytype(const FileControlBlock &fcb, struct stat fileInfo);
 vector<CombinedPermission> displayPermission(const FileControlBlock &fcb, struct stat fileInfo);
-void displayFileInformation(const FileControlBlock &fcb);
+string displayFileInformation(const FileControlBlock &fcb);
 void readcontentInInteger(string fileName);

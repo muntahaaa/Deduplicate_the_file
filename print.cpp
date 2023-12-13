@@ -12,16 +12,6 @@ string files, nameOfFile;
 vector<char> charVector1;
 vector<char> charVector2;
 
-vector<char> convertToChar(vector<string> contents)
-{
-    vector<char> charVector;
-
-    for (const string &str : contents)
-    {
-        charVector.insert(charVector.end(), str.begin(), str.end());
-    }
-    return charVector;
-}
 void printProperties(vector<string> directoryItems, vector<string> &names)
 {
     int count = 0;
@@ -49,26 +39,35 @@ void printMat(double mat[100][100], vector<string> directoryItems)
         {
 
             printf("%.2lf        ", mat[i][j]);
-            // cout<<mat[i][j]<<"  ";
         }
         cout << endl;
     }
 }
 
-string getFileExtension(const string &filename) {
-   
+string getFileExtension(const string &filename)
+{
+
     size_t dotPos = filename.find_last_of('.');
 
-  
-    if (dotPos != std::string::npos && dotPos < filename.length() - 1) {
-       
+    if (dotPos != std::string::npos && dotPos < filename.length() - 1)
+    {
+
         return filename.substr(dotPos + 1);
     }
 
-   
     return "";
 }
 
+vector<char> convertToChar(vector<string> contents)
+{
+    vector<char> charVector;
+
+    for (const string &str : contents)
+    {
+        charVector.insert(charVector.end(), str.begin(), str.end());
+    }
+    return charVector;
+}
 void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, vector<string> &names)
 {
     double jaccardMat[100][100];
@@ -82,7 +81,7 @@ void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, ve
             loadFile(path1, fcb, filename1);
 
             vector<char> charVector1(content.begin(), content.end());
-          
+
             fcb.content.clear();
 
             string filename2 = directoryNames[j];
@@ -90,12 +89,12 @@ void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, ve
             loadFile(path2, fcb, filename2);
 
             vector<char> charVector2(content.begin(), content.end());
-           
-            /*cout << "path1 " << path1 << endl;
+
+            cout << "path1 " << path1 << endl;
             cout << "file1 " << filename1 << endl;
 
             displayVector(charVector1, "File 1");
-            displayVector(charVector2, "File 2");*/
+            displayVector(charVector2, "File 2");
 
             vector<char> unionVector;
             unionVectors(charVector1, charVector2, unionVector);
@@ -103,7 +102,7 @@ void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, ve
             vector<char> intersectionVector;
             intersectionVectors(charVector1, charVector2, intersectionVector);
 
-            printNotMatchedCharacters(charVector1, intersectionVector,filename1,filename2);
+            printNotMatchedCharacters(charVector1, intersectionVector, filename1, filename2);
 
             double jaccardSimilarity = static_cast<double>(intersectionVector.size()) / unionVector.size();
             cout << "\nJaccard similarity: " << jaccardSimilarity * 100 << "%" << endl
@@ -118,7 +117,6 @@ void similarityChecking(vector<string> directoryItems, FileControlBlock &fcb, ve
     printMat(jaccardMat, directoryItems);
 }
 
-
 void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vector<string> &names, const char *directoryPath)
 {
     struct FileControlBlocks
@@ -130,7 +128,7 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
         size_t size;
         FileType type;
         FileStatus status;
-        CombinedPermission permissions;
+        string permissions;
         string extension;
 
         bool operator==(const FileControlBlocks &other) const
@@ -158,7 +156,7 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
                 type = other.type;
                 status = other.status;
                 permissions = other.permissions;
-                extension=other.extension;
+                extension = other.extension;
             }
             return *this;
         }
@@ -171,7 +169,6 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
         FileControlBlocks currentFile; // Create a new instance for each file
         loadFile(directoryItems[i], fcb, directoryNames[i]);
 
-        // Assign values to currentFile
         currentFile.filename = fcb.filename;
         currentFile.name = fcb.name;
         currentFile.content = content;
@@ -179,7 +176,7 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
         currentFile.size = fcb.size;
         currentFile.type = fcb.type;
         currentFile.status = fcb.status;
-        currentFile.permissions = fcb.permissions;
+        currentFile.permissions = displayFileInformation(fcb);
         currentFile.extension = getFileExtension(directoryItems[i]);
 
         fcbs.push_back(currentFile);
@@ -190,10 +187,10 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
 
     for (size_t i = 0; i < directoryItems.size(); i++)
     {
+         cout<<fcbs[i].name<<" "<<fcbs[i].content<<"="<<fcbs[i].permissions<<endl<<endl;
         for (size_t j = i + 1; j < directoryItems.size(); j++)
-        {   
-           
-           
+        {
+
             if (fcbs[i] == fcbs[j] && i != j)
             {
                 cout << "similarity found in ";
@@ -209,7 +206,6 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
                 if (result == 0)
                 {
                     cout << "duplicate file " << fileNametoDelete << " has been deleted" << endl;
-                    // break;  // Uncomment if you want to delete only one duplicate file
                 }
                 else
                 {
@@ -219,8 +215,6 @@ void checkEqualities(vector<string> directoryItems, FileControlBlock &fcb, vecto
             }
         }
     }
-
- 
 
     if (!similarityFound)
     {

@@ -66,6 +66,7 @@ void printNotMatchedCharacters(const vector<char> &vec1, const vector<char> &vec
     unordered_set<char> set1(vec1.begin(), vec1.end());
     unordered_set<char> set2(vec2.begin(), vec2.end());
 
+    if(file1!=file2){
     cout << "Unmatched characters between "<<file1<<" and "<<file2<<": ";
     for (const char &c : set1)
     {
@@ -73,5 +74,6 @@ void printNotMatchedCharacters(const vector<char> &vec1, const vector<char> &vec
         {
             cout << c;
         }
+    }
     }
 }
